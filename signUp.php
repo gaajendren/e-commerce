@@ -1,3 +1,9 @@
+<?php 
+ $error = "";
+if(isset($_GET['error'])){
+    $error = "Email Already Exits. Please Login Use that Email.";
+} ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,7 +12,7 @@
 
     
 
-    <title>Printing Book</title>
+    <title>dressPrinting Book</title>
 
     <!-- Scripts -->
     <script src="js/app.js" defer></script>
@@ -43,17 +49,11 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
                     </ul>
-
-                    <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                       
+
                                 <li class="nav-item">
                                     <a style="font-family:verdana;" class="nav-link" href="login.php">Login</a>
                                 </li>
@@ -80,11 +80,9 @@
             <div class="signup-content">
                
                 <div class="signup-form">
-                    <span class="invalid"  role="alert">
-                        <strong id="main_error"></strong>
-                    </span>
+                  
                     <h2 style="font-family:verdana" class="form-title">Register</h2>
-                    <form method="POST" action="register_query.php" onclick="return validateForm()" class="register-form" >
+                    <form method="POST" action="register_query.php"  class="register-form" >
                         <div class="form-group">
                             <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                             <input style="font-family:verdana" type="text"  id="name" placeholder="Your Name" class="form-control " name="name" value="" required autocomplete="name" autofocus>
@@ -106,7 +104,17 @@
                                     </span>
                                
                         </div>
-
+                        <br>
+                        <div class="form-group">
+                            <label for="contact"><i class="zmdi zmdi-email"></i></label>
+                            <input style="font-family:verdana" type="tel"  id="contact" oninput="validatePhoneNumber()" placeholder="Your Phone Number" class="form-control " name="contact" required autocomplete="contact">
+                          
+                                    <span style="width: 270px;"  class="invalid"  role="alert">
+                                        <strong id="error_contact"></strong>
+                                    </span>
+                               
+                        </div>
+                       
                       <br>
                         <div class="form-group">
                             <label for="password"><i class="zmdi zmdi-email"></i></label>
@@ -127,13 +135,18 @@
                                 <input  style="  font-family:verdana;" id="password-confirm" type="password" placeholder= "Password Confirmation" class="form-control" name="c_password" required autocomplete="new-password">
                           
                         </div>
-                         
+                      
+                        <span class="invalid"  role="alert">
+                        <strong id="main_error"></strong>
+                    </span>
                      <br>  
                         <div class="form-group form-button">
-                            <button type="submit" style=" border: none;" name="submit" class="form-submit"  class="form-group form-button">Register</button>
+                            <button type="submit" style=" border: none;" onclick="return validateForm()" name="submit" class="form-submit"  class="form-group form-button">Register</button>
                         </div>
                     </form>
+                   
                 </div>
+              
                 <div class="signup-image">
                     <figure><img src="img/signup-image.jpg" alt="sing up image"></figure>
                     <a href="/login.php" class="signup-image-link">I am already member</a>
@@ -146,6 +159,9 @@
 </main>
 
 <script>
+
+let error = document.getElementById("main_error");
+error.textContent = "<?php echo $error ?>";
 
 function validateForm() {
             var name = document.getElementById("name").value;
@@ -211,6 +227,23 @@ function validateForm() {
 
             return true; 
     }
+
+
+    function validatePhoneNumber() {
+            let phoneNumberInput = document.getElementById('contact');
+            let errorSpan = document.getElementById('error_contact');
+            
+           
+            let numericPhoneNumber = phoneNumberInput.value.replace(/[^\d-]/g, '');
+
+         
+            if (numericPhoneNumber.length >= 10 || /^(\d{3}-){2}\d{4}$/.test(numericPhoneNumber)) {
+                errorSpan.textContent = '';
+            } else {
+                errorSpan.textContent = 'Please enter a valid phone number';
+                phoneNumberInput.value = numericPhoneNumber;
+            }
+        }
 </script>
 </body>
 </html>

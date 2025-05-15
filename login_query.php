@@ -29,31 +29,27 @@ require 'db.php';
 
             }else{
                 $hashpass= $result1['password'];
-
-              
-
-                if(password_verify($pass, $hashpass)){
-                   
-                    
+                if(password_verify($pass, $hashpass)){           
                      $_SESSION['id'] = $result1['id'];
-                     $_SESSION['email'] = $result1['email'];                   
-                    header("Location: index.php");
-                    exit();
+                     $_SESSION['email'] = $result1['email']; 
+                     $_SESSION['name'] = $result1['name']; 
+                     $_SESSION['contact'] = $result1['contact']; 
+                     $_SESSION['role'] = $result1['role'];
 
+                     if($result1['role'] == 0){
+                        header('Location: index.php');
+                        exit();
+                    }else if($result1['role'] == 1){
+                        header('Location: admin/index.php');
+                        exit();
+                    }
                 }else{
                     header("Location: login.php?wrongpassword");
                     exit();
                 }
-               
-
-
             }
-        
            mysqli_stmt_close($stmt);
            mysqli_close($conn);
-        
-         
-
         }
     }
 }else {

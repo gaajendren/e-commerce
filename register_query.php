@@ -4,6 +4,7 @@ require 'db.php';
 if(isset($_POST['submit'])){
     $name = $_POST['name'];
     $email = $_POST['email'];
+    $contact = $_POST['contact'];
     $password = $_POST['password'];
     $c_pass = $_POST['c_password'];
 
@@ -27,7 +28,7 @@ if(isset($_POST['submit'])){
             exit();
            }else{
 
-        $sql = "INSERT INTO users (name , email,password) VALUES (?,?,?)";
+        $sql = "INSERT INTO users (name , email,password, contact) VALUES (?,?,?,?)";
         $stmt = mysqli_stmt_init($conn);
 
         if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -36,7 +37,7 @@ if(isset($_POST['submit'])){
         }else{
             $hash = password_hash($password , PASSWORD_DEFAULT);
             
-            mysqli_stmt_bind_param($stmt,"sss",$name,$email,$hash);
+            mysqli_stmt_bind_param($stmt,"ssss",$name,$email,$hash,$contact);
             mysqli_stmt_execute($stmt);
             header("Location: login.php?sucess");
             
